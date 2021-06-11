@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface Session {
+export interface Session {
   authorId: string;
   createdAt: Date;
   modifiedAt: Date;
@@ -20,5 +20,5 @@ const sessionSchema = new Schema<Session>({
   },
 });
 
-const session = model('Session', sessionSchema);
+const session = model<Session>('Session', sessionSchema);
 export default session;

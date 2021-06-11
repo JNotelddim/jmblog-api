@@ -1,10 +1,5 @@
 import { connect } from 'mongoose';
 
-import User from './user.model';
-import Session from './session.model';
-import Post from './post.model';
-import Comment from './comment.model';
-
 const username = process.env.DB_USER;
 const password = process.env.DB_PASS;
 const host = process.env.DB_HOST;
@@ -18,4 +13,7 @@ export const connectDb = () =>
     },
   );
 
-export const models = { User, Session, Post, Comment };
+export { default as UserModel, User } from './user.model';
+export { default as SessionModel, Session } from './session.model';
+export { default as PostModel, Post } from './post.model';
+export { default as CommentModel, Comment } from './comment.model';

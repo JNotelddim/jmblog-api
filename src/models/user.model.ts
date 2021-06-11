@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface User {
+export interface User {
   email: string;
   createdAt: Date;
   salt: string;
@@ -54,5 +54,5 @@ const userSchema = new Schema<User>({
   ],
 });
 
-const user = model('User', userSchema);
+const user = model<User>('User', userSchema);
 export default user;

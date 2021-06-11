@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface Post {
+export interface Post {
   authorId: string;
   contents: string;
   createdAt: Date;
@@ -43,5 +43,5 @@ const postSchema = new Schema<Post>({
   ],
 });
 
-const post = model('Post', postSchema);
+const post = model<Post>('Post', postSchema);
 export default post;
