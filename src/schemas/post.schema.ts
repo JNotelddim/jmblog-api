@@ -1,14 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Schema } from 'mongoose';
+import { Post } from '../interfaces';
 
-export interface Post {
-  authorId: string;
-  contents: string;
-  createdAt: Date;
-  modifiedAt: Date;
-  title: string;
-}
-
-const postSchema = new Schema<Post>({
+export const PostSchema = new Schema<Post>({
   author: {
     type: Schema.Types.ObjectId,
     unique: false,
@@ -42,6 +35,3 @@ const postSchema = new Schema<Post>({
     },
   ],
 });
-
-const post = model<Post>('Post', postSchema);
-export default post;

@@ -1,13 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Schema } from 'mongoose';
+import { Comment } from '../interfaces';
 
-export interface Comment {
-  authorId: string;
-  createdAt: Date;
-  modifiedAt: Date;
-  text: string;
-}
-
-const commentSchema = new Schema<Comment>({
+export const CommentSchema = new Schema<Comment>({
   author: {
     type: Schema.Types.ObjectId,
     unique: false,
@@ -34,6 +28,3 @@ const commentSchema = new Schema<Comment>({
     required: false,
   },
 });
-
-const comment = model<Comment>('Comment', commentSchema);
-export default comment;
