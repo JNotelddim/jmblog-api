@@ -6,7 +6,7 @@ import { UsersService } from 'src/services';
 import { usersProviders } from 'src/providers';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule], // TODO: why is this now considered a circular dependency?
   controllers: [UsersController],
   providers: [UsersService, ...usersProviders],
 })
