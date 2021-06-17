@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 
 // Controllers
-import { AppController } from '../app.controller';
+import { AppController } from 'src/controllers';
 
 // Services
-import { AppService } from '../app.service';
+import { AppService } from 'src/services';
 
 // Modules
-import { UsersModule } from './users.module';
+import { UsersModule } from 'src/modules';
 
 // Exports
 @Module({

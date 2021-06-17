@@ -11,12 +11,9 @@ import { CreateUserDto } from 'src/dataTransferObjects';
 @Injectable()
 export class UsersService {
   constructor(
-    // TODO: why is this failing? app.module > users.module > users.providers -- it's imported!
     @Inject(USER_MODEL)
     private userModel: Model<User>,
   ) {}
-
-  // async checkIfUserExists(createUserDto: CreateUserDto): Promise<boolean>
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto);
