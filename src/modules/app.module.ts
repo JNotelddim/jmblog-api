@@ -7,11 +7,11 @@ import { AppController } from 'src/controllers';
 import { AppService } from 'src/services';
 
 // Modules
-import { UsersModule } from 'src/modules';
+import { AuthModule } from 'src/modules';
 
 // Exports
 @Module({
-  imports: [UsersModule],
+  imports: [AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -6,6 +6,7 @@ import { UsersService } from 'src/services';
 import { usersProviders } from 'src/providers';
 
 @Module({
+  // TODO: remove forwardRef?
   imports: [forwardRef(() => DatabaseModule)],
   controllers: [UsersController],
   providers: [UsersService, ...usersProviders],
