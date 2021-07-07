@@ -1,9 +1,9 @@
 import { forwardRef, Module } from '@nestjs/common';
 
-import { DatabaseModule } from 'src/modules';
-import { UsersController } from 'src/controllers';
-import { UsersService } from 'src/services';
-import { usersProviders } from 'src/providers';
+import { DatabaseModule } from 'src/database/database.module';
+import { UsersController } from 'src/users/users.controller';
+import { UsersService } from 'src/users/users.service';
+import { usersProviders } from 'src/users/users.providers';
 
 @Module({
   // TODO: remove forwardRef?

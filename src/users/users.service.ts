@@ -3,9 +3,9 @@ import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 
 // Local imports
-import { User } from 'src/interfaces';
+import { User } from 'src/interfaces/user.interface';
 import { USER_MODEL } from 'src/constants';
-import { CreateUserDto } from 'src/dataTransferObjects';
+import { CreateUserDto } from 'src/users/user.dtos';
 
 // Exports
 @Injectable()

@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { User } from '../interfaces';
+import { User } from 'src/interfaces/user.interface';
 
 export const UserSchema = new Schema<User>({
   email: {
