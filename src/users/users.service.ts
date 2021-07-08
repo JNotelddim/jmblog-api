@@ -18,7 +18,13 @@ export class UsersService {
 
   async create({ email, password }: CreateUserDto): Promise<User> {
     const salt = randomBytes(128).toString('utf-8');
-    const hash = pbkdf2Sync(password, salt, HASHING_ITERATIONS, 256, 'sha256');
+    const hash = pbkdf2Sync(
+      password,
+      salt,
+      HASHING_ITERATIONS,
+      256,
+      'sha256',
+    ).toString('utf-8');
 
     const createdUser = new this.userModel({
       email,
