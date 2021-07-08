@@ -11,7 +11,7 @@ export const databaseProviders = [
     provide: DATABASE_CONNECTION_KEY,
     useFactory: (): Promise<typeof mongoose> =>
       mongoose.connect(
-        `mongodb+srv://${username}:${password}@${host}/myFirstDatabase?retryWrites=true&w=majority`,
+        `mongodb+srv://${username}:${password}@${host}/BlogDb?retryWrites=true&w=majority`,
         {
           useUnifiedTopology: true,
           useNewUrlParser: true,

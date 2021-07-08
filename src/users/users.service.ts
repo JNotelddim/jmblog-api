@@ -20,14 +20,11 @@ export class UsersService {
     const salt = randomBytes(128).toString('utf-8');
     const hash = pbkdf2Sync(password, salt, HASHING_ITERATIONS, 256, 'sha256');
 
-    console.log({ salt, hash });
-
     const createdUser = new this.userModel({
       email,
       salt,
       hash,
       iterations: HASHING_ITERATIONS,
-      // dateCreated: new Date.now(),
     });
     return createdUser.save();
   }
