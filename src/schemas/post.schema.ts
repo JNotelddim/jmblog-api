@@ -27,11 +27,6 @@ export const PostSchema = new Schema<Post>({
     unique: false,
     required: false,
   },
-  isDeleted: {
-    type: Boolean,
-    unique: false,
-    required: false,
-  },
   comments: [
     {
       type: Schema.Types.ObjectId,

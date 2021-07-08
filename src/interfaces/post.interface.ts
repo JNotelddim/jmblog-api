@@ -6,5 +6,4 @@ export interface Post extends Document {
   readonly createdAt: Date;
   readonly modifiedAt: Date;
   readonly title: string;
-  readonly isDeleted: boolean;
 }

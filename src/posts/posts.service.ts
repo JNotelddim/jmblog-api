@@ -42,6 +42,7 @@ export class PostsService {
 
   async deleteById(id: string): Promise<{ success: boolean }> {
     // TODO: how to handle this without a try-catch?
+    // TODO: ensure this is a soft delete, otherwise re-add `isDeleted` to model
     try {
       await this.postModel.findByIdAndDelete(id).exec();
       return { success: true };
