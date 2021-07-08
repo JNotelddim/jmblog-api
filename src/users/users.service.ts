@@ -1,10 +1,11 @@
 // Modules
 import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
+import { randomBytes, pbkdf2Sync } from 'crypto';
 
 // Local imports
 import { User } from 'src/interfaces/user.interface';
-import { USER_MODEL } from 'src/constants';
+import { USER_MODEL, HASHING_ITERATIONS } from 'src/constants';
 import { CreateUserDto } from 'src/users/user.dtos';
 
 // Exports
@@ -15,8 +16,19 @@ export class UsersService {
     private userModel: Model<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
+  async create({ email, password }: CreateUserDto): Promise<User> {
+    const salt = randomBytes(128).toString('utf-8');
+    const hash = pbkdf2Sync(password, salt, HASHING_ITERATIONS, 256, 'sha256');
+
+    console.log({ salt, hash });
+
+    const createdUser = new this.userModel({
+      email,
+      salt,
+      hash,
+      iterations: HASHING_ITERATIONS,
+      // dateCreated: new Date.now(),
+    });
     return createdUser.save();
   }
 

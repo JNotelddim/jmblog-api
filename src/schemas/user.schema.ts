@@ -7,6 +7,7 @@ export const UserSchema = new Schema<User>({
     unique: true,
     required: true,
   },
+  // TODO: add dateCreated, username?
   salt: {
     type: String,
     unique: false,
