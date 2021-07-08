@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Comment } from '../interfaces';
+import { Comment } from 'src/interfaces/comment.interface';
 
 export const CommentSchema = new Schema<Comment>({
   author: {

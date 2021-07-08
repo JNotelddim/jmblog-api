@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Post } from '../interfaces';
+import { Post } from 'src/interfaces/post.interface';
 
 export const PostSchema = new Schema<Post>({
   author: {

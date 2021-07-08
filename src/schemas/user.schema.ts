@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { User } from '../interfaces';
+import { User } from 'src/interfaces/user.interface';
 
 export const UserSchema = new Schema<User>({
   email: {
@@ -7,6 +7,7 @@ export const UserSchema = new Schema<User>({
     unique: true,
     required: true,
   },
+  // TODO: add dateCreated, username?
   salt: {
     type: String,
     unique: false,
