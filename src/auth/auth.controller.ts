@@ -8,16 +8,19 @@ import {
 
 import { LocalAuthGuard } from 'src/passport/guards/local.guard';
 import { UsersService } from 'src/users/users.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('/auth/login')
+  @Post('auth/login')
   async login(@Request() req) {
-    // TODO: establish cookie / token
-    return req.user;
+    return this.authService.login(req.user);
   }
 
   @Post('/auth/signup')
