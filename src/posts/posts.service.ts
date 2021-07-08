@@ -39,4 +39,14 @@ export class PostsService {
   async findByTitle(title: string): Promise<Post> {
     return this.postModel.findOne({ title }).exec();
   }
+
+  async deleteById(id: string): Promise<{ success: boolean }> {
+    // TODO: how to handle this without a try-catch?
+    try {
+      await this.postModel.findByIdAndDelete(id).exec();
+      return { success: true };
+    } catch (e) {
+      return { success: false };
+    }
+  }
 }
