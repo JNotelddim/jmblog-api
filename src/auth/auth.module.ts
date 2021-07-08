@@ -27,7 +27,7 @@ import { usersProviders } from 'src/users/users.providers';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '10h' },
     }),
   ],
   controllers: [AuthController],

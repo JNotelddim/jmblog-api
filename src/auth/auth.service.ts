@@ -4,6 +4,7 @@ import { pbkdf2Sync } from 'crypto';
 
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/interfaces/user.interface';
+import { JWTPayload } from 'src/interfaces/jwt.interface';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { username: user.email, sub: user.id };
+    const payload: JWTPayload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
