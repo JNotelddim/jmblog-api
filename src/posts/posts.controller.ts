@@ -12,7 +12,7 @@ import { PostsService } from 'src/posts/posts.service';
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
 
 @Controller()
-export class UsersController {
+export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get('/posts')
