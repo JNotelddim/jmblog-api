@@ -6,7 +6,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 
-import { LocalAuthGuard } from 'src/passport/guards/local.guard';
+import { LocalAuthGuard } from 'src/passport/local.guard';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from 'src/auth/auth.service';
 

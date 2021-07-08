@@ -14,7 +14,8 @@ import { UsersModule } from 'src/users/users.module';
 import { DatabaseModule } from 'src/database/database.module';
 
 // Strategies
-import { LocalStrategy } from 'src/passport/strategies/local.strategy';
+import { LocalStrategy } from 'src/passport/local.strategy';
+import { JwtStrategy } from 'src/passport/jwt.strategy';
 
 // Providers
 import { usersProviders } from 'src/users/users.providers';
@@ -30,6 +31,12 @@ import { usersProviders } from 'src/users/users.providers';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, LocalStrategy, ...usersProviders],
+  providers: [
+    AuthService,
+    UsersService,
+    LocalStrategy,
+    JwtStrategy,
+    ...usersProviders,
+  ],
 })
 export class AuthModule {}
