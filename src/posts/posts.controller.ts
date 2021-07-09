@@ -8,14 +8,20 @@ import {
   Param,
 } from '@nestjs/common';
 
-import { Post as PostInterface } from 'src/interfaces/post.interface';
-import { PostsService } from 'src/posts/posts.service';
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
+import { PostsService } from 'src/posts/posts.service';
+import { CommentsService } from 'src/comments/comments.service';
+import { Comment } from 'src/interfaces/comment.interface';
+import { Post as PostInterface } from 'src/interfaces/post.interface';
 
 @Controller()
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly commentsService: CommentsService,
+  ) {}
 
+  /* POST ENDPOINTS  */
   @Get('/posts')
   async getUsers(): Promise<PostInterface[]> {
     return await this.postsService.findAll();
@@ -38,5 +44,28 @@ export class PostsController {
   @Delete('/posts/:id')
   async deletePost(@Param('id') id: string): Promise<{ success: boolean }> {
     return await this.postsService.deleteById(id);
+  }
+
+  /* COMMENTS */
+  @UseGuards(JwtAuthGuard)
+  @Get('/posts/:id/comments')
+  async getPostComments(@Param('id') id: string): Promise<Comment[]> {
+    return await this.commentsService.getPostComments(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/posts/:id/comments')
+  async createPostComment(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<Comment> {
+    const { user, body } = req;
+    const { contents } = body;
+
+    return await this.commentsService.create({
+      contents,
+      author: user.id,
+      post: id,
+    });
   }
 }

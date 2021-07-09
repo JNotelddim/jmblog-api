@@ -32,12 +32,12 @@ export class PostsService {
     return this.postModel.findById(id).exec();
   }
 
-  async findByAuthorId(authorId: string): Promise<Post> {
-    return this.postModel.findOne({ authorId }).exec();
+  async findByAuthorId(authorId: string): Promise<Post[]> {
+    return await this.postModel.find({ author: authorId }).exec();
   }
 
-  async findByTitle(title: string): Promise<Post> {
-    return this.postModel.findOne({ title }).exec();
+  async findByTitle(title: string): Promise<Post[]> {
+    return this.postModel.find({ title }).exec();
   }
 
   async deleteById(id: string): Promise<{ success: boolean }> {

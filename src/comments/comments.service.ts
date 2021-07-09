@@ -21,11 +21,15 @@ export class CommentsService {
     return newComment.save();
   }
 
-  async findAll(): Promise<Comment[]> {
+  async getAll(): Promise<Comment[]> {
     return this.commentModel.find().exec();
   }
 
-  async findByPostId(postId: string): Promise<Comment[]> {
+  async getPostComments(postId: string): Promise<Comment[]> {
     return this.commentModel.find({ post: postId }).exec();
+  }
+
+  async getUserComments(authorId: string): Promise<Comment[]> {
+    return this.commentModel.find({ author: authorId }).exec();
   }
 }
