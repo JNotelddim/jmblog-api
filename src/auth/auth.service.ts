@@ -20,14 +20,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const { salt, hash, iterations, ...result } = user;
+    const { salt, hash, iterations, email, _id /*, username */ } = user;
     const generatedHash = pbkdf2Sync(password, salt, iterations, 256, 'sha256');
 
     if (hash !== generatedHash.toString()) {
       throw new UnauthorizedException();
     }
 
-    return { email: result.email };
+    return { email, id: _id };
   }
 
   async login(user: User) {

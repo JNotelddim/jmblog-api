@@ -11,6 +11,7 @@ import { UsersService } from 'src/users/users.service';
 
 // Modules
 import { UsersModule } from 'src/users/users.module';
+import { PostsModule } from 'src/posts/posts.module';
 import { DatabaseModule } from 'src/database/database.module';
 
 // Strategies
@@ -24,6 +25,7 @@ import { usersProviders } from 'src/users/users.providers';
   imports: [
     DatabaseModule,
     UsersModule,
+    PostsModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
