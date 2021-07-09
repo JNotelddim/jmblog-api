@@ -5,6 +5,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Param,
 } from '@nestjs/common';
 
 import { Post as PostInterface } from 'src/interfaces/post.interface';
@@ -29,20 +30,13 @@ export class PostsController {
     return await this.postsService.create({
       title,
       content,
-      authorId: user.id,
+      author: user.id,
     });
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/posts/:id')
-  async deletePost(@Request() req): Promise<PostInterface> {
-    const { body, user } = req;
-    const { title, content } = body;
-
-    return await this.postsService.create({
-      title,
-      content,
-      authorId: user.id,
-    });
+  async deletePost(@Param('id') id: string): Promise<{ success: boolean }> {
+    return await this.postsService.deleteById(id);
   }
 }
