@@ -45,6 +45,7 @@ export class PostsService {
     // TODO: ensure this is a soft delete, otherwise re-add `isDeleted` to model
     try {
       await this.postModel.findByIdAndDelete(id).exec();
+      // TODO: what's a better return value?
       return { success: true };
     } catch (e) {
       return { success: false };
