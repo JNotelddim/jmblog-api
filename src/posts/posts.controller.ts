@@ -22,8 +22,9 @@ export class PostsController {
   ) {}
 
   /* POST ENDPOINTS  */
+  @UseGuards(JwtAuthGuard)
   @Get('/posts')
-  async getUsers(): Promise<PostInterface[]> {
+  async getPosts(): Promise<PostInterface[]> {
     return await this.postsService.findAll();
   }
 
