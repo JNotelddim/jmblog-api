@@ -13,14 +13,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findByEmail(username);
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.usersService.findByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    const { salt, hash, iterations, email, _id /*, username */ } = user;
+    const { salt, hash, iterations, _id /*, username */ } = user;
     const generatedHash = pbkdf2Sync(password, salt, iterations, 256, 'sha256');
 
     if (hash !== generatedHash.toString()) {
