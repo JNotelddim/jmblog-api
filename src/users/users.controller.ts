@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
 import { UsersService } from 'src/users/users.service';
@@ -16,6 +16,14 @@ export class UsersController {
     private readonly postsService: PostsService,
     private readonly commentsService: CommentsService,
   ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  async getProfile(@Request() req): Promise<User> {
+    const user = req.user;
+    const result = await this.usersService.findById(user.id);
+    return result;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('/users')
