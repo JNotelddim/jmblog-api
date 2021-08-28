@@ -12,7 +12,10 @@ import { JwtAuthGuard } from 'src/passport/jwt.guard';
 import { PostsService } from 'src/posts/posts.service';
 import { CommentsService } from 'src/comments/comments.service';
 import { Comment } from 'src/interfaces/comment.interface';
-import { Post as PostInterface } from 'src/interfaces/post.interface';
+import {
+  Post as PostInterface,
+  SummarizedPost,
+} from 'src/interfaces/post.interface';
 
 @Controller()
 export class PostsController {
@@ -24,8 +27,18 @@ export class PostsController {
   /* POST ENDPOINTS  */
   @UseGuards(JwtAuthGuard)
   @Get('/posts')
-  async getPosts(): Promise<PostInterface[]> {
-    return await this.postsService.findAll();
+  async getPosts(): Promise<SummarizedPost[]> {
+    const fullPosts = await this.postsService.findAll();
+    const summarizedPosts: SummarizedPost[] = fullPosts.map(
+      ({ _id, title, authorId, createdAt, content }) => ({
+        _id,
+        title,
+        authorId,
+        createdAt,
+        summary: content.slice(0, 80), // Arbitrary max length to truncate at.
+      }),
+    );
+    return summarizedPosts;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -39,6 +52,12 @@ export class PostsController {
       content,
       author: user.id,
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/posts/:id')
+  async getPost(@Param('id') id: string): Promise<PostInterface> {
+    return await this.postsService.findById(id);
   }
 
   @UseGuards(JwtAuthGuard)
