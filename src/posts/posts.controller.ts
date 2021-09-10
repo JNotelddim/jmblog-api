@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
   Param,
+  Put,
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
@@ -41,16 +42,24 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/posts')
-  async createPost(@Request() req): Promise<PostInterface> {
+  @Put('/posts')
+  async putPost(@Request() req): Promise<PostInterface> {
     const { body, user } = req;
-    const { title, content } = body;
+    const { id, title, content } = body;
 
-    return await this.postsService.create({
-      title,
-      content,
-      author: user.id,
-    });
+    const exists = id !== undefined;
+    console.log({ body: req.body, exists });
+    if (exists) {
+      console.log('updating');
+      return await this.postsService.update(body);
+    } else {
+      console.log('creating');
+      return await this.postsService.create({
+        title,
+        content,
+        author: user.id,
+      });
+    }
   }
 
   @Get('/posts/:id')

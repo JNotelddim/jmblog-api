@@ -1,11 +1,11 @@
 // Modules
 import { Model } from 'mongoose';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 
 // Local imports
 import { Post } from 'src/interfaces/post.interface';
 import { POST_MODEL } from 'src/constants';
-import { CreatePostDto } from 'src/posts/posts.dtos';
+import { CreatePostDto, UpdatePostDto } from 'src/posts/posts.dtos';
 
 // Exports
 @Injectable()
@@ -15,13 +15,25 @@ export class PostsService {
     private postModel: Model<Post>,
   ) {}
 
-  async create(createPostDto: CreatePostDto): Promise<Post> {
+  async create(putPostDto: CreatePostDto): Promise<Post> {
     const createdPost = new this.postModel({
-      ...createPostDto,
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
+      ...putPostDto,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
     });
     return createdPost.save();
+  }
+
+  async update({ id, title, content }: UpdatePostDto): Promise<Post> {
+    await this.postModel.updateOne(
+      { id },
+      {
+        title,
+        content,
+        modifiedAt: new Date(),
+      },
+    );
+    return this.postModel.findById(id);
   }
 
   async findAll(): Promise<Post[]> {
