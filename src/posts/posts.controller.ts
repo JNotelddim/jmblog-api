@@ -48,12 +48,9 @@ export class PostsController {
     const { id, title, content } = body;
 
     const exists = id !== undefined;
-    console.log({ body: req.body, exists });
     if (exists) {
-      console.log('updating');
       return await this.postsService.update(body);
     } else {
-      console.log('creating');
       return await this.postsService.create({
         title,
         content,

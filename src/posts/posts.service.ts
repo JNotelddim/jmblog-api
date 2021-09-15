@@ -26,7 +26,7 @@ export class PostsService {
 
   async update({ id, title, content }: UpdatePostDto): Promise<Post> {
     await this.postModel.updateOne(
-      { id },
+      { _id: id },
       {
         title,
         content,
