@@ -37,7 +37,7 @@ export class PostsService {
   }
 
   async findAll(): Promise<Post[]> {
-    return this.postModel.find().exec();
+    return this.postModel.find().sort({ createdAt: 'descending' }).exec();
   }
 
   async findById(id: string): Promise<Post> {
