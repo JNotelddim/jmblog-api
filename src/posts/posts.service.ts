@@ -1,6 +1,6 @@
 // Modules
 import { Model } from 'mongoose';
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 
 // Local imports
 import { Post } from 'src/interfaces/post.interface';
