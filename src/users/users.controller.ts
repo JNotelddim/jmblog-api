@@ -1,11 +1,18 @@
-import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Request,
+  Put,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
 import { UsersService } from 'src/users/users.service';
 import { PostsService } from 'src/posts/posts.service';
 import { CommentsService } from 'src/comments/comments.service';
 
-import { User } from 'src/interfaces/user.interface';
+import { UserProfile } from 'src/interfaces/user.interface';
 import { Comment } from 'src/interfaces/comment.interface';
 import { Post } from 'src/interfaces/post.interface';
 
@@ -19,21 +26,29 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  async getProfile(@Request() req): Promise<User> {
+  async getProfile(@Request() req): Promise<UserProfile> {
     const user = req.user;
-    const result = await this.usersService.findById(user.id);
-    return result;
+    return await this.usersService.findById(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/user/:id')
+  async updateUser(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<UserProfile> {
+    return await this.usersService.updateProfile({ id, ...req.body });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/users')
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<UserProfile[]> {
     return await this.usersService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/user/:id')
-  async getUser(@Param('id') id: string): Promise<Partial<User>> {
+  async getUser(@Param('id') id: string): Promise<UserProfile> {
     return await this.usersService.findById(id);
   }
 

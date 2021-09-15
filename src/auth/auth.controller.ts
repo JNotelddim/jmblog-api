@@ -28,7 +28,7 @@ export class AuthController {
     const { body } = req;
     const { email, password } = body;
 
-    const existingAccount = await this.usersService.findByEmail(email);
+    const existingAccount = await this.usersService.getFullUserByEmail(email);
 
     if (existingAccount) {
       throw new ConflictException();

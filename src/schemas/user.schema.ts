@@ -7,7 +7,26 @@ export const UserSchema = new Schema<User>({
     unique: true,
     required: true,
   },
-  // TODO: add dateCreated, username?
+  firstName: {
+    type: String,
+    unique: false,
+    required: false,
+  },
+  lastName: {
+    type: String,
+    unique: false,
+    required: false,
+  },
+  userName: {
+    type: String,
+    unique: true,
+    required: false,
+  },
+  createdAt: {
+    type: Date,
+    unique: false,
+    required: true,
+  },
   salt: {
     type: String,
     unique: false,
