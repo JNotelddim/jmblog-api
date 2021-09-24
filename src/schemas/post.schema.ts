@@ -25,7 +25,12 @@ export const PostSchema = new Schema<Post>({
   content: {
     type: String,
     unique: false,
-    required: false,
+    required: true,
+  },
+  summary: {
+    type: String,
+    unique: false,
+    required: true,
   },
   comments: [
     {

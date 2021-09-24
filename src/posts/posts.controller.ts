@@ -30,12 +30,12 @@ export class PostsController {
   async getPosts(): Promise<SummarizedPost[]> {
     const fullPosts = await this.postsService.findAll();
     const summarizedPosts: SummarizedPost[] = fullPosts.map(
-      ({ _id, title, authorId, createdAt, content }) => ({
+      ({ _id, title, authorId, createdAt, summary }) => ({
         _id,
         title,
         authorId,
         createdAt,
-        summary: content.slice(0, 80), // Arbitrary max length to truncate at.
+        summary,
       }),
     );
     return summarizedPosts;
@@ -45,7 +45,7 @@ export class PostsController {
   @Put('/posts')
   async putPost(@Request() req): Promise<PostInterface> {
     const { body, user } = req;
-    const { id, title, content } = body;
+    const { id, title, content, summary } = body;
 
     const exists = id !== undefined;
     if (exists) {
@@ -54,6 +54,7 @@ export class PostsController {
       return await this.postsService.create({
         title,
         content,
+        summary,
         author: user.id,
       });
     }

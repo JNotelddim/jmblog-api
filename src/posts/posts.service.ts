@@ -24,12 +24,13 @@ export class PostsService {
     return createdPost.save();
   }
 
-  async update({ id, title, content }: UpdatePostDto): Promise<Post> {
+  async update({ id, title, content, summary }: UpdatePostDto): Promise<Post> {
     await this.postModel.updateOne(
       { _id: id },
       {
         title,
         content,
+        summary,
         modifiedAt: new Date(),
       },
     );
