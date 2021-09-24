@@ -4,9 +4,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import { randomBytes, pbkdf2Sync } from 'crypto';
 
 // Local imports
-import { User } from 'src/interfaces/user.interface';
+import { User, UserProfile } from 'src/interfaces/user.interface';
 import { USER_MODEL, HASHING_ITERATIONS } from 'src/constants';
-import { CreateUserDto } from 'src/users/user.dtos';
+import { CreateUserDto, UpdateUserDto } from 'src/users/user.dtos';
 
 // Exports
 @Injectable()
@@ -16,7 +16,25 @@ export class UsersService {
     private userModel: Model<User>,
   ) {}
 
-  async create({ email, password }: CreateUserDto): Promise<User> {
+  private convertUserToProfile({
+    id,
+    firstName,
+    lastName,
+    email,
+    userName,
+    createdAt,
+  }: User): UserProfile {
+    return {
+      id,
+      firstName,
+      lastName,
+      email,
+      userName,
+      createdAt,
+    };
+  }
+
+  async create({ email, password }: CreateUserDto): Promise<UserProfile> {
     const salt = randomBytes(128).toString('utf-8');
     const hash = pbkdf2Sync(
       password,
@@ -31,19 +49,38 @@ export class UsersService {
       salt,
       hash,
       iterations: HASHING_ITERATIONS,
+      createdAt: new Date(),
     });
-    return createdUser.save();
+    createdUser.save();
+    return this.convertUserToProfile(createdUser);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  async updateProfile({
+    id,
+    email,
+    firstName,
+    lastName,
+    userName,
+  }: UpdateUserDto): Promise<UserProfile> {
+    await this.userModel.updateOne(
+      { _id: id },
+      { email, firstName, lastName, userName },
+    );
+    const user = await this.userModel.findById(id).exec();
+    return this.convertUserToProfile(user);
   }
 
-  async findById(id: string): Promise<User> {
-    return this.userModel.findById(id).exec();
+  async findAll(): Promise<UserProfile[]> {
+    const users = await this.userModel.find().exec();
+    return users.map((user) => this.convertUserToProfile(user));
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findById(id: string): Promise<UserProfile> {
+    const user = await this.userModel.findById(id).exec();
+    return this.convertUserToProfile(user);
+  }
+
+  async getFullUserByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email }).exec();
   }
 }

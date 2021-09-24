@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
   Param,
+  Put,
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
@@ -25,7 +26,6 @@ export class PostsController {
   ) {}
 
   /* POST ENDPOINTS  */
-  @UseGuards(JwtAuthGuard)
   @Get('/posts')
   async getPosts(): Promise<SummarizedPost[]> {
     const fullPosts = await this.postsService.findAll();
@@ -42,19 +42,23 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/posts')
-  async createPost(@Request() req): Promise<PostInterface> {
+  @Put('/posts')
+  async putPost(@Request() req): Promise<PostInterface> {
     const { body, user } = req;
-    const { title, content } = body;
+    const { id, title, content } = body;
 
-    return await this.postsService.create({
-      title,
-      content,
-      author: user.id,
-    });
+    const exists = id !== undefined;
+    if (exists) {
+      return await this.postsService.update(body);
+    } else {
+      return await this.postsService.create({
+        title,
+        content,
+        author: user.id,
+      });
+    }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/posts/:id')
   async getPost(@Param('id') id: string): Promise<PostInterface> {
     return await this.postsService.findById(id);
@@ -67,7 +71,6 @@ export class PostsController {
   }
 
   /* COMMENTS */
-  @UseGuards(JwtAuthGuard)
   @Get('/posts/:id/comments')
   async getPostComments(@Param('id') id: string): Promise<Comment[]> {
     return await this.commentsService.getPostComments(id);
