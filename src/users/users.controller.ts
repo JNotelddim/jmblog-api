@@ -25,19 +25,15 @@ export class UsersController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/profile')
+  @Get('/user')
   async getProfile(@Request() req): Promise<UserProfile> {
     const user = req.user;
     return await this.usersService.findById(user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Put('/user/:id')
-  async updateUser(
-    @Param('id') id: string,
-    @Request() req,
-  ): Promise<UserProfile> {
-    return await this.usersService.updateProfile({ id, ...req.body });
+  @Get('/user/:id')
+  async getUser(@Param('id') id: string): Promise<UserProfile> {
+    return await this.usersService.findById(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,9 +43,12 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/user/:id')
-  async getUser(@Param('id') id: string): Promise<UserProfile> {
-    return await this.usersService.findById(id);
+  @Put('/user/:id')
+  async updateUser(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<UserProfile> {
+    return await this.usersService.updateProfile({ id, ...req.body });
   }
 
   @UseGuards(JwtAuthGuard)
