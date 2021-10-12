@@ -10,3 +10,8 @@ export interface UpdateUserDto {
   lastName?: string;
   userName?: string;
 }
+
+export interface UpdatePasswordDto {
+  id: string;
+  newPassword: string;
+}

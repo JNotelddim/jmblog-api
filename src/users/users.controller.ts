@@ -27,8 +27,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/user')
   async getProfile(@Request() req): Promise<UserProfile> {
-    const user = req.user;
-    return await this.usersService.findById(user.id);
+    const { id } = req.user;
+    return await this.usersService.findById(id);
   }
 
   @Get('/user/:id')
@@ -40,6 +40,21 @@ export class UsersController {
   @Get('/users')
   async getUsers(): Promise<UserProfile[]> {
     return await this.usersService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/user/password')
+  async updatePassword(@Request() req): Promise<UserProfile> {
+    const { id } = req.user;
+    const { oldPassword, newPassword } = req.body;
+
+    console.log({ oldPassword, newPassword });
+
+    const success = await this.usersService.verifyOldPassword(id, oldPassword);
+    if (success) {
+      // if not success, the exception will throw via the verify fn
+      return await this.usersService.updatePassword({ id, newPassword });
+    }
   }
 
   @UseGuards(JwtAuthGuard)
