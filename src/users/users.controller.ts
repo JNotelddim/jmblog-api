@@ -5,6 +5,7 @@ import {
   UseGuards,
   Request,
   Put,
+  Post,
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/passport/jwt.guard';
@@ -14,7 +15,7 @@ import { CommentsService } from 'src/comments/comments.service';
 
 import { UserProfile } from 'src/interfaces/user.interface';
 import { Comment } from 'src/interfaces/comment.interface';
-import { Post } from 'src/interfaces/post.interface';
+import { Post as IPost } from 'src/interfaces/post.interface';
 
 @Controller()
 export class UsersController {
@@ -43,16 +44,15 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('/user/password')
+  @Post('/user/password')
   async updatePassword(@Request() req): Promise<UserProfile> {
+    // feels like `updatePassword` ought to have an empty return body maybe?
     const { id } = req.user;
     const { oldPassword, newPassword } = req.body;
 
-    console.log({ oldPassword, newPassword });
-
     const success = await this.usersService.verifyOldPassword(id, oldPassword);
     if (success) {
-      // if not success, the exception will throw via the verify fn
+      // if not success, the exception will have thrown via the verify fn
       return await this.usersService.updatePassword({ id, newPassword });
     }
   }
@@ -68,7 +68,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/user/:id/posts')
-  async getUserPosts(@Param('id') id: string): Promise<Post[]> {
+  async getUserPosts(@Param('id') id: string): Promise<IPost[]> {
     return await this.postsService.findByAuthorId(id);
   }
 

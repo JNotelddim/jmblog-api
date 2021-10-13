@@ -20,6 +20,11 @@ export class UsersService {
     private userModel: Model<User>,
   ) {}
 
+  /**
+   * converUserToProfile takes a user object and just prunes out all the
+   * sensitive data which is intended to stay internal to the back-end.
+   * This makes the `profile` data shareable with external consumers.
+   */
   private convertUserToProfile({
     id,
     firstName,
@@ -38,6 +43,9 @@ export class UsersService {
     };
   }
 
+  /**
+   * saltAndHashPassword takes a password value and salts + hashes it.
+   */
   private saltAndHashPassword(value: string) {
     const salt = randomBytes(128).toString('utf-8');
     const hash = pbkdf2Sync(
@@ -51,6 +59,9 @@ export class UsersService {
     return { salt, hash };
   }
 
+  /**
+   * create just makes a new user with the email and password provided.
+   */
   async create({ email, password }: CreateUserDto): Promise<UserProfile> {
     const { salt, hash } = this.saltAndHashPassword(password);
 
@@ -65,6 +76,10 @@ export class UsersService {
     return this.convertUserToProfile(createdUser);
   }
 
+  // I'd prefer for this to be in the Auth service, but that would for me to make
+  // the UsersService use the AuthService, which would create a circular dependency,
+  // and while I believe there are ways to make that work, it wasn't working for me months
+  // ago when I was setting all this up. So for now I'll just have this here.
   async verifyOldPassword(id: string, oldPassword: string) {
     const { salt, hash, iterations } = await this.userModel.findById(id).exec();
     const generatedHash = pbkdf2Sync(
@@ -81,6 +96,10 @@ export class UsersService {
     return true;
   }
 
+  /**
+   * updatePassword takes a new password string and salts+hashes it,
+   * then updates the user db instance with the new values.
+   */
   async updatePassword({
     id,
     newPassword,
@@ -92,6 +111,11 @@ export class UsersService {
     return this.convertUserToProfile(user);
   }
 
+  /**
+   * updateProfile allows the user to update the profile fields on
+   * the user - ie, there are some fields which the user isn't allowed to
+   * manually change.
+   */
   async updateProfile({
     id,
     email,
